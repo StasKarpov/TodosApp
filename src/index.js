@@ -1,12 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
+import tasks from './reducers'
+import { fetchTasks } from './actions'
+import TasksList from './containers/TasksList'
+import CreateTask from './containers/CreateTask'
+import Login from './containers/Login'
+import { createStore, applyMiddleware, combineReducers  } from 'redux'
+import { Provider } from 'react-redux'
+import { reducer as formReducer } from 'redux-form'
 
-ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const loggerMiddleware = createLogger()
+const reducer = combineReducers({tasks,form:formReducer})
+const store = createStore(
+  reducer,
+  applyMiddleware(
+    thunkMiddleware, //for creating requests to backend
+    loggerMiddleware //for debugging
+  ))
+
+store.dispatch(fetchTasks())//get initial tasks from server
+
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <div>
+          <Route exact path="/" component={TasksList} />
+          <Route path="/create" component={CreateTask} />
+          <Route path="/login" component={Login} />
+      </div>
+    </Router>
+  </Provider>,
+  document.getElementById('root')
+)
