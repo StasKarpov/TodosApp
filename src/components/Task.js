@@ -36,5 +36,5 @@ const Task = (props) =>{
 }
 
 export default reduxForm({
-  form: 'update ' // a unique name for this form
+  form: Math.random().toString(36).substring(7) // a unique name for this form
 })(Task);

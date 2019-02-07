@@ -8,7 +8,6 @@ const mapStateToProps = state => ({
   status: state.tasks.status
 })
 
-
 const mapDispatchToProps = dispatch => ({
   createTask : task => dispatch(createTask(task))
 })

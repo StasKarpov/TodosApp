@@ -6,6 +6,8 @@ import $ from 'jquery';
 
 //TODO add error handeling
 
+/////////////
+//login
 export const requestLogin = () => {
   return {
     type: "REQUEST_LOGIN"
@@ -41,7 +43,8 @@ export const handleLogin = (credentials) => {
 }
 
 
-
+/////////////
+//create
 export const requestCreateTask = () => {
   return {
     type: "REQUEST_CREATE_TASK"
@@ -79,7 +82,8 @@ export const createTask = (task) => {
 }
 
 
-
+/////////////
+//get
 export const requestTasks = () => {
   return {
     type: "REQUEST_TASKS",
@@ -104,6 +108,8 @@ export const fetchTasks = (page=1,sortBy='id',order='asc') => {
  }
 }
 
+/////////////
+//put 
 export const requestUpdate = () => {
   return {
     type: "REQUEST_UPDATE",

@@ -1,5 +1,7 @@
 import React from 'react'
 
+//REDO THIS
+//TODO redo app to change sortBy page and order with special actions instead of fetchTasks action
 const Pagination = ({currentPage,maxPage,fetchTasks,sortBy,order}) => (
   <div>
     {currentPage > 1 ?

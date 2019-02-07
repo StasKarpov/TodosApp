@@ -8,11 +8,11 @@ const LoginForm = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username</label>
-          <Field name="username" component="input" type="text" required/>
+          <Field name="username" component="input" type="text" placeholder="admin" equired/>
         </div>
         <div>
           <label htmlFor="password">Password</label>
-          <Field name="password" component="input" type="password" required/>
+          <Field name="password" component="input" type="password" placeholder="123" required/>
         </div>
         <button type="submit">Submit</button>
       </form>

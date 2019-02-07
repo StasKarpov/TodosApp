@@ -1,16 +1,18 @@
 import React from 'react'
 import Task from './Task'
 import Pagination from './Pagination'
+import { Link } from 'react-router-dom'
 
 const TasksList =
 ({isFetching, tasks, page, maxPage, fetchTasks, isAuthentificated, updateTask, sortBy, order}) => (
   <div>
-    <a href='/create'>Create task</a>
+    <Link to="/create">CreateTask</Link>
     <br/>
     {isAuthentificated ?
       <h5>You are authentificated as admin</h5>
       :
-      <a href='/login'>Login</a>
+      <Link to="/login">Login</Link>
+
     }
     <ul>
       {isFetching ? <h2> loading ... </h2> : null}
