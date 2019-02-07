@@ -1,3 +1,13 @@
+This is test todos React+Redux app
+demo is here:
+http://beejeereacttask.zzz.com.ua
+
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
