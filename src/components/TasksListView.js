@@ -2,7 +2,8 @@ import React from 'react'
 import Task from './Task'
 import Pagination from './Pagination'
 
-const TasksList = ({isFetching, tasks, page, maxPage, fetchTasks, isAuthentificated, updateTask}) => (
+const TasksList =
+({isFetching, tasks, page, maxPage, fetchTasks, isAuthentificated, updateTask, sortBy, order}) => (
   <div>
     <a href='/create'>Create task</a>
     <br/>
@@ -18,7 +19,7 @@ const TasksList = ({isFetching, tasks, page, maxPage, fetchTasks, isAuthentifica
         <Task
           key={task.id}
           isAuthentificated={isAuthentificated}
-          handleUpdate={(values)=>updateTask(values)}
+          onSubmit={(values)=>updateTask(values,page,sortBy,order)}
           {...task}
         />
       )}
@@ -26,7 +27,9 @@ const TasksList = ({isFetching, tasks, page, maxPage, fetchTasks, isAuthentifica
      <Pagination
         currentPage={page}
         maxPage={maxPage}
-        fetchTasks={fetchTasks}/>
+        fetchTasks={fetchTasks}
+        sortBy={sortBy}
+        order={order}/>
    </div>
 
 )

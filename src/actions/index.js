@@ -1,6 +1,9 @@
 import fetch from 'cross-fetch'
 import 'babel-polyfill'
-import axios from 'axios'
+//import axios from 'axios'
+import md5 from 'js-md5'
+import $ from 'jquery';
+
 //TODO add error handeling
 
 export const requestLogin = () => {
@@ -48,49 +51,56 @@ export const requestCreateTask = () => {
 export const recieveCreateTask = (json) => {
   return {
     type: "RECEIVE_CREATE_TASK",
-    status: json.data.status,
+    status: json.status ? json.status : 'error',
   }
 }
 
 export const createTask = (task) => {
-  console.log('task is');
-  console.log(task);
   return dispatch => {
   dispatch(requestCreateTask())
+  var form = new FormData();
+  form.append("username", task.username);
+  form.append("email", task.email);
+  form.append("text", task.text);
 
-  return axios.post('https://uxcandy.com/~shapoval/test-task-backend/create?developer=Stas',{
-      username: task.username,
-      email: task.email,
-      text: task.text
-  }).then(json => { console.log(json);dispatch(recieveCreateTask(json))})
+  var settings = {
+    'url': 'https://uxcandy.com/~shapoval/test-task-backend/create?developer=Stas',
+    'crossDomain': true,
+    'method': 'POST',
+    'mimeType': "multipart/form-data",
+    'contentType': false,
+    'processData': false,
+    'data': form,
+    'dataType': "json",
+  }
+
+  $.ajax(settings).done(json => { console.log(json);dispatch(recieveCreateTask(json))});
  }
 }
 
 
 
-export const requestTasks = (page) => {
+export const requestTasks = () => {
   return {
     type: "REQUEST_TASKS",
-    page
   }
 }
 
-export const receiveTasks = (json,page) => {
+export const receiveTasks = (json,page,sortBy,order) => {
   return {
     type: "RECEIVE_TASKS",
-    json: json,
-    page
+    json,page,sortBy,order
   }
 }
 
 
 export const fetchTasks = (page=1,sortBy='id',order='asc') => {
   return dispatch => {
-   dispatch(requestTasks(page))
+   dispatch(requestTasks())
    return fetch('https://uxcandy.com/~shapoval/test-task-backend/?developer=Stas&page='
                 + page + '&sort_field=' + sortBy + '&sort_direction=' + order)
      .then(response => response.json())
-     .then(json => {dispatch(receiveTasks(json,page))})
+     .then(json => {dispatch(receiveTasks(json,page,sortBy,order))})
  }
 }
 
@@ -100,18 +110,54 @@ export const requestUpdate = () => {
   }
 }
 
-export const receiveUpdate = (json) => {
+export const receiveUpdate = () => {
   return {
     type: "RECEIVE_UPDATE",
-    json
   }
 }
 
 
-export const updateTask = (task) => {
+export const updateTask = (task,page,sortBy,order) => {
   return dispatch => {
-   dispatch(requestUpdate(task))
-   //call update
-   dispatch(receiveUpdate())
+   dispatch(requestUpdate())
+   var data = {token:'beejee'}
+   var id = undefined
+   //parse data from edit task form output
+   Object.keys(task).forEach((key)=>{
+    if(key.includes('text')) {
+      Object.assign(data,{text:task[key]})
+      id = key.substring(4,key.length)
+    }
+    if(key.includes('checkbox')){
+      Object.assign(data,{status:task[key]?10:0})
+      id = key.substring(8,key.length)
+    }
+   })
+   //create signature
+   let url = data.status ? 'status=' + encodeURIComponent(data.status) + '&' : ''
+       url+= data.text ? 'text=' + encodeURIComponent(data.text) + '&' : ''
+       url+= 'token=' + encodeURIComponent(data.token)
+   data.signature = md5(url)
+
+   //convert to form data
+   var form = new FormData();
+   for ( var key in data ) {
+      form.append(key, data[key]);
+   }
+
+   var settings = {
+     'url': 'https://uxcandy.com/~shapoval/test-task-backend/edit/'+id+'?developer=Stas',
+     'crossDomain': true,
+     'method': 'POST',
+     'mimeType': "multipart/form-data",
+     'contentType': false,
+     'processData': false,
+     'data': form,
+     'dataType': "json",
+   }
+   $.ajax(settings).done(json => {
+     dispatch(receiveUpdate());
+     dispatch(fetchTasks(page,sortBy,order))
+   })
  }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-const TaskForm = (props) => {
+const CreateTaskForm = (props) => {
   const { handleSubmit } = props
     return(
       <form onSubmit={handleSubmit}>
@@ -25,4 +25,4 @@ const TaskForm = (props) => {
 // Decorate the form component
 export default reduxForm({
   form: 'task' // a unique name for this form
-})(TaskForm);
+})(CreateTaskForm);

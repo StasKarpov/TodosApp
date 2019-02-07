@@ -23,7 +23,7 @@ const store = createStore(
   ))
 
 store.dispatch(fetchTasks())//get initial tasks from server
-
+console.log('hello');
 
 ReactDOM.render(
   <Provider store={store}>

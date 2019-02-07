@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 
 const LoginForm = (props) => {
   const { handleSubmit } = props
+  console.log(handleSubmit);
     return(
       <form onSubmit={handleSubmit}>
         <div>

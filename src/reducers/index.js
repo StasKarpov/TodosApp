@@ -9,31 +9,32 @@ export default function tasks(state=[],action){
       return Object.assign({},state,{
         loginFailed:true
       })
-      
+
     case "REQUEST_TASKS":
-      return {
+      return Object.assign({},state,{
         isFetching:true,
-        page:action.page,
         items:[],
         totalTasksCount:0
-      }
+      })
     case "RECEIVE_TASKS":
-      return {
+      return Object.assign({},state,{
         isFetching:false,
-        page:action.page,
         totalTasksCount: action.json.message.total_task_count,
         items: action.json.message.tasks,
-      }
+        page:action.page,
+        sortBy: action.sortBy,
+        order: action.order,
+      })
     case "REQUEST_CREATE_TASK":
-      return {
+      return Object.assign({},state,{
         isFetching:true,
-      }
+      })
     case "RECEIVE_CREATE_TASK":
-      return {
+      return Object.assign({},state,{
         isFetching:false,
         successMessage:true,
         status: action.status
-      }
+      })
     default:
       return state
   }

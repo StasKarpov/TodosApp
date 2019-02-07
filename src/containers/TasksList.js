@@ -7,12 +7,14 @@ const mapStateToProps = state => ({
   tasks: state.tasks.items,
   page: state.tasks.page,
   maxPage: Math.ceil(state.tasks.totalTasksCount/3),
-  isAuthentificated: state.tasks.isAuthentificated
+  isAuthentificated: state.tasks.isAuthentificated,
+  sortBy: state.tasks.sortBy,
+  order: state.tasks.order
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchTasks : page => dispatch(fetchTasks(page)),
-  updateTask : task => dispatch(updateTask(task))
+  fetchTasks : (page,sortBy,order) => dispatch(fetchTasks(page,sortBy,order)),
+  updateTask : (task,page,sortBy,order) => dispatch(updateTask(task,page,sortBy,order))
 })
 
 export default connect(
