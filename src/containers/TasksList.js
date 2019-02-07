@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchTasks : (page,sortBy,order) => dispatch(fetchTasks(page,sortBy,order)),
+  //redo updateTask to not consume page,sortBy and order params by adding actions 
   updateTask : (task,page,sortBy,order) => dispatch(updateTask(task,page,sortBy,order))
 })
 
